@@ -59,15 +59,6 @@ router.get('/recipes', async (req, res) => {
     }
 })
 
-// router.get('/:id', async (req, res) => {
-//     const id = req.params.id;
-//     const allRecipes = await getAllRecipes();    //vuelvo a utilizar la funcion
-//     if (id) {
-//         let recipeId = allRecipes.filter(e => e.ID == id)   //filtro el id que llega por params
-//         recipeId.length ? res.status(200).json(recipeId) : res.status(404).send('No se encontro la receta')
-//     }
-// })
-
 router.get('/diets', async (req, res)=>{
     const diets=[
         "gluten free",
@@ -228,11 +219,20 @@ router.get('/types', async (req, res) => {
     //     });
     //   });
 
-    const diets = ["dairy free", "lacto ovo vegetarian", "vegan", "gluten free", "paleolithic", "primal", "pescatarian", "fodmap friendly", "whole 30"]
+    const diets = [
+        "dairy free",
+        "lacto ovo vegetarian",
+        "vegan",
+        "gluten free",
+        "paleolithic",
+        "primal",
+        "pescatarian",
+        "fodmap friendly",
+        "whole 30"]
 
-    diets.forEach(el => {
+    diets.forEach(e => {
         Diet.findOrCreate({
-            where: {name: el}
+            where: {name: e}
         });
     });
 
@@ -243,11 +243,19 @@ router.get('/types', async (req, res) => {
 
 
 // POST--------------------
-
+/*
 router.post('/recipe', async (req, res) => {
 
     // Esto me llega por Body
-    const {title, summary, spoonacularScore, healthScore, diets, createdInDb, image} = req.body;
+    const {
+        title,
+        summary,
+        spoonacularScore,
+        healthScore,
+        diets,
+        createdInDb,
+        image
+        } = req.body;
 
     let instructions = req.body.instructions
 
@@ -271,10 +279,31 @@ router.post('/recipe', async (req, res) => {
         }
     })
     await recipeCreated.addDiet(findDiet);
-
-
-    return res.send('Recipe has been created')
+    return res.send('La receta fue creada')
 })
+*/
+router.post("/recipe", async (req, res) => {
+	const { title, summary, healthScore, spoonacularScore, image, steps, diets } = req.body;
+	try {
+		let recipe = await Recipe.create({
+			title,
+			summary,
+			healthScore,
+			spoonacularScore,
+			image,
+			steps,
+		});
+		const dietsToBeAdded = await Diets.findAll({
+			where: {
+				name: diets,
+			},
+		});
+		await recipe.addDiets(dietsToBeAdded);
+		res.json(recipe);
+	} catch (error) {
+		res.send(error);
+	}
+});
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);

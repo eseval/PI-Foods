@@ -14,9 +14,9 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    sumary: {
+    summary: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     spoonacularScore: {
       type: DataTypes.INTEGER,
