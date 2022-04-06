@@ -167,7 +167,6 @@ router.get('/recipes', async (req, res) => {
     return res.json(totalInfo);
 })
 
-
 router.get('/recipes/:id', async (req, res) => {
     const {id} = req.params;
     if(id.length === 36) {
@@ -205,6 +204,18 @@ router.get('/recipes/:id', async (req, res) => {
     }
 })
 
+
+// router.get('/recipes/:id', async (req, res) => {
+//     const id = req.params.id;
+//   //const {id} = req.params;
+//     const recipesTotal = await getAllRecipes(); //!se trae todas las recetas
+//     if(id) {
+//         let recipeId = await recipesTotal.filter(e => e.id == (id)); //!se filtra por el id
+//         recipeId.length
+//         ? res.status(200).json(recipeId)
+//         : res.status(404).send("Receta no encontrada");
+//     }
+// })
 
 router.get('/types', async (req, res) => {
     
@@ -304,6 +315,8 @@ router.post("/recipe", async (req, res) => {
 		res.send(error);
 	}
 });
+
+
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
